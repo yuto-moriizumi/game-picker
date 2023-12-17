@@ -8,7 +8,7 @@ export class Game extends Item {
   count!: number;
 }
 
-export const ConfigModel = model<Game>("game-picker", {
+export const GameModel = model<Game>("game-picker", {
   id: { type: String, hashKey: true, default: v4 },
   name: String,
   count: Number,
