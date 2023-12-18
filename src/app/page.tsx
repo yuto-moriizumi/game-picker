@@ -29,6 +29,8 @@ async function remove(id: string) {
   await new GameModel({ id }).delete();
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const env = validateEnv({
     DB_ACCESS_KEY_ID: str(),
