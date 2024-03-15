@@ -53,9 +53,15 @@ export default async function Home() {
 
   const steam = new SteamAPI(env.STEAM_KEY);
   const gamesWithPlayers = await Promise.all(
-    (await steam.getUserOwnedGames("76561198177613149")).map(async (game) => ({
-      ...game,
-      count: await steam.getGamePlayers(game.appID.toString()),
+    (
+      await steam.getUserOwnedGames("76561198177613149", {
+        includeAppInfo: true,
+      })
+    ).map(async ({ game }) => ({
+      id: game.id.toString(),
+      name: "name" in game ? game.name : "unknown",
+      iconURL: "iconURL" in game ? game.iconURL : "",
+      count: await steam.getGamePlayers(game.id),
     })),
   );
   const games = [...customGames, ...gamesWithPlayers].sort(
