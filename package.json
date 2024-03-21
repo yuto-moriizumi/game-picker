@@ -24,7 +24,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.1",
     "steam-web": "^0.7.0",
-    "steamapi": "^2.4.2",
+    "steamapi": "^3.0.8",
     "uuid": "^9.0.1",
     "yup": "^1.4.0"
   },
