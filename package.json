@@ -16,7 +16,7 @@
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
     "@volgakurvar/vaidate-env": "^1.0.0",
-    "axios": "^1.6.2",
+    "axios": "^1.6.8",
     "dynamoose": "^4.0.0",
     "envalid": "^8.0.0",
     "next": "14.1.4",
