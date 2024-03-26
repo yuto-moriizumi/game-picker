@@ -3,6 +3,7 @@ import { AWS_REGION } from "@/constant";
 import { str } from "envalid";
 import { validateEnv } from "@volgakurvar/vaidate-env";
 import SteamAPI from "steamapi";
+import "steamapi/package.json";
 import {
   Container,
   Paper,
