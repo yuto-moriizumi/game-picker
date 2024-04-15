@@ -1,0 +1,20 @@
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-env": {
+          // Prevent Babel from destroying server actions
+          "targets": { "chrome": 118 }
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "babel-plugin-transform-import-meta",
+      // Prevent Babel from transpiling into broken codes
+      { "module": "ES6" }
+    ]
+  ]
+}
