@@ -2,35 +2,9 @@ import { aws } from "dynamoose";
 import { AWS_REGION } from "@/constant";
 import { str } from "envalid";
 import { validateEnv } from "@volgakurvar/vaidate-env";
-import SteamAPI from "steamapi";
-import "steamapi/package.json";
-import {
-  Container,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { Modal } from "./Modal";
 import { GameModel } from "@/model/Game";
-import Image from "next/image";
-import { Button } from "./Button";
-
-async function saveGame(name: string, count: number) {
-  "use server";
-  const game = new GameModel({ name, count });
-  await game.save();
-}
-
-async function remove(id: string) {
-  "use server";
-  await new GameModel({ id }).delete();
-}
-
-export const dynamic = "force-dynamic";
+import { Renderer } from "./render";
+import SteamAPI from "steamapi";
 
 export default async function Home() {
   const env = validateEnv({
@@ -49,6 +23,7 @@ export default async function Home() {
       },
     }),
   );
+  const json = await import("steamapi/package.json");
 
   const customGames = await GameModel.scan().exec();
 
@@ -68,47 +43,49 @@ export default async function Home() {
   const games = [...customGames, ...gamesWithPlayers].sort(
     (a, b) => b.count - a.count,
   );
+  console.info({ json: json.version });
 
   return (
-    <>
-      <Container maxWidth="sm">
-        <TableContainer component={Paper}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell>名前</TableCell>
-                <TableCell width="100px">プレイヤー数</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {games.map((game) => (
-                <TableRow key={game.name}>
-                  <TableCell>
-                    {"iconURL" in game ? (
-                      <Image
-                        src={game.iconURL}
-                        alt="ゲームのアイコン"
-                        width={32}
-                        height={32}
-                      />
-                    ) : null}
-                  </TableCell>
-                  <TableCell>{game.name}</TableCell>
-                  <TableCell align="right">{game.count}</TableCell>
-                  <TableCell>
-                    {"id" in game ? (
-                      <Button gameId={game.id} onClick={remove} />
-                    ) : null}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Container>
-      <Modal onSave={saveGame} />
-    </>
+    <Renderer games={games} />
+    // <Container maxWidth="sm">
+    //   <TableContainer component={Paper}>
+    //     <Table size="small">
+    //       <TableHead>
+    //         <TableRow>
+    //           <TableCell></TableCell>
+    //           <TableCell>名前</TableCell>
+    //           <TableCell width="100px">プレイヤー数</TableCell>
+    //           <TableCell></TableCell>
+    //         </TableRow>
+    //       </TableHead>
+    //       <TableBody>
+    //         {games.map((game) => (
+    //           <TableRow key={game.name}>
+    //             <TableCell>
+    //               {"iconURL" in game ? (
+    //                 <Image
+    //                   src={game.iconURL}
+    //                   alt="ゲームのアイコン"
+    //                   width={32}
+    //                   height={32}
+    //                 />
+    //               ) : null}
+    //             </TableCell>
+    //             <TableCell>{game.name}</TableCell>
+    //             <TableCell align="right">{game.count}</TableCell>
+    //             <TableCell>
+    //               {"id" in game ? (
+    //                 <Button gameId={game.id} onClick={remove} />
+    //               ) : null}
+    //             </TableCell>
+    //           </TableRow>
+    //         ))}
+    //       </TableBody>
+    //     </Table>
+    //   </TableContainer>
+    // </Container>
+    // <Modal onSave={saveGame} />
   );
 }
+
+export const dynamic = "force-dynamic";
