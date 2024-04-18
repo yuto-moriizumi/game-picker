@@ -19,7 +19,7 @@
     "axios": "^1.6.8",
     "dynamoose": "^4.0.0",
     "envalid": "^8.0.0",
-    "next": "^14.2.1",
+    "next": "^14.2.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.3",
