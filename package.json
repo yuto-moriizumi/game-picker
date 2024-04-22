@@ -17,7 +17,7 @@
     "@mui/material": "^5.15.15",
     "@volgakurvar/vaidate-env": "^1.0.0",
     "axios": "^1.6.8",
-    "dynamoose": "^4.0.0",
+    "dynamoose": "^4.0.1",
     "envalid": "^8.0.0",
     "next": "^14.2.2",
     "react": "^18",
