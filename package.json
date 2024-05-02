@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.3.4",
     "@mui/icons-material": "^5.15.15",
-    "@mui/material": "^5.15.15",
+    "@mui/material": "^5.15.16",
     "@volgakurvar/vaidate-env": "^1.0.0",
     "axios": "^1.6.8",
     "dynamoose": "^4.0.1",
