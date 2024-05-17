@@ -23,7 +23,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.4",
-    "sharp": "^0.33.3",
+    "sharp": "^0.33.4",
     "steamapi": "^3.0.8",
     "uuid": "^9.0.1",
     "yup": "^1.4.0"
