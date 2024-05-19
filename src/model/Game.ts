@@ -1,15 +1,18 @@
 import { model } from "dynamoose";
 import { Item } from "dynamoose/dist/Item";
-import { v4 } from "uuid";
 
-class Game extends Item {
-  id!: string;
-  name!: string;
-  count!: number;
+class GameItem extends Item {
+  id!: number;
 }
 
-export const GameModel = model<Game>("game-picker", {
-  id: { type: String, hashKey: true, default: v4 },
-  name: String,
-  count: Number,
+export const GameModel = model<GameItem>("game-picker", {
+  id: Number,
 });
+
+export type Game = {
+  id: number;
+  name: string;
+  iconURL: string;
+  count: number;
+  isTracked?: boolean;
+};

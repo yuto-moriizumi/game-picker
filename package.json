@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
     "@mui/material-nextjs": "^5.15.11",
+    "@tanstack/react-query": "^5.37.1",
     "@volgakurvar/vaidate-env": "^1.0.0",
     "axios": "^1.6.8",
     "dynamoose": "^4.0.1",
@@ -26,10 +27,10 @@
     "react-hook-form": "^7.51.4",
     "sharp": "^0.33.4",
     "steamapi": "^3.0.8",
-    "uuid": "^9.0.1",
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-private-methods": "^7.24.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
