@@ -14,24 +14,29 @@ import { useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import React from "react";
+import { useMutation } from "@tanstack/react-query";
+import { addGame } from "@/app/actions";
+import { getQueryClient } from "./Provider";
 
 const schema = yup
   .object({
-    name: yup.string().required(),
-    count: yup.number().integer().required(),
+    id: yup.number().integer().required(),
   })
   .required();
 type FormType = yup.InferType<typeof schema>;
 
-export function Modal(props: {
-  onSave: (name: string, count: number) => Promise<unknown>;
-}) {
+export function Modal() {
   const [open, setOpen] = useState(false);
   const methods = useForm<FormType>({ resolver: yupResolver(schema) });
 
-  const onSubmit = methods.handleSubmit(
-    async ({ name, count }) => await props.onSave(name, count),
-  );
+  const save = useMutation({
+    mutationFn: addGame,
+    onSuccess: async () => {
+      await getQueryClient().invalidateQueries({ queryKey: ["games"] });
+      setOpen(false);
+    },
+  });
 
   return (
     <>
@@ -41,10 +46,9 @@ export function Modal(props: {
         sx={{ top: "50%", width: "500px", marginX: "auto" }}
       >
         <Paper>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={methods.handleSubmit(({ id }) => save.mutate(id))}>
             <Stack>
-              <TextField label="タイトル" {...methods.register("name")} />
-              <TextField label="プレイヤー数" {...methods.register("count")} />
+              <TextField label="ID" {...methods.register("id")} />
               <Button type="submit">追加</Button>
             </Stack>
           </form>
