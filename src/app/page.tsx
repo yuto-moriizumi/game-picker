@@ -3,8 +3,20 @@ import { AWS_REGION } from "@/constant";
 import { str } from "envalid";
 import { validateEnv } from "@volgakurvar/vaidate-env";
 import { GameModel } from "@/model/Game";
-import { Renderer } from "./render";
 import SteamAPI from "steamapi";
+import {
+  Container,
+  TableContainer,
+  Paper,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Table,
+} from "@mui/material";
+import { remove } from "./actions";
+import { Button } from "./Button";
+import Image from "next/image";
 
 export default async function Home() {
   const env = validateEnv({
@@ -23,7 +35,6 @@ export default async function Home() {
       },
     }),
   );
-  const json = await import("steamapi/package.json");
 
   const customGames = await GameModel.scan().exec();
 
@@ -43,48 +54,45 @@ export default async function Home() {
   const games = [...customGames, ...gamesWithPlayers].sort(
     (a, b) => b.count - a.count,
   );
-  console.info({ json: json.version });
 
   return (
-    <Renderer games={games} />
-    // <Container maxWidth="sm">
-    //   <TableContainer component={Paper}>
-    //     <Table size="small">
-    //       <TableHead>
-    //         <TableRow>
-    //           <TableCell></TableCell>
-    //           <TableCell>名前</TableCell>
-    //           <TableCell width="100px">プレイヤー数</TableCell>
-    //           <TableCell></TableCell>
-    //         </TableRow>
-    //       </TableHead>
-    //       <TableBody>
-    //         {games.map((game) => (
-    //           <TableRow key={game.name}>
-    //             <TableCell>
-    //               {"iconURL" in game ? (
-    //                 <Image
-    //                   src={game.iconURL}
-    //                   alt="ゲームのアイコン"
-    //                   width={32}
-    //                   height={32}
-    //                 />
-    //               ) : null}
-    //             </TableCell>
-    //             <TableCell>{game.name}</TableCell>
-    //             <TableCell align="right">{game.count}</TableCell>
-    //             <TableCell>
-    //               {"id" in game ? (
-    //                 <Button gameId={game.id} onClick={remove} />
-    //               ) : null}
-    //             </TableCell>
-    //           </TableRow>
-    //         ))}
-    //       </TableBody>
-    //     </Table>
-    //   </TableContainer>
-    // </Container>
-    // <Modal onSave={saveGame} />
+    <Container maxWidth="sm">
+      <TableContainer component={Paper}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>名前</TableCell>
+              <TableCell width="100px">プレイヤー数</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {games.map((game) => (
+              <TableRow key={game.name}>
+                <TableCell>
+                  {"iconURL" in game ? (
+                    <Image
+                      src={game.iconURL}
+                      alt="ゲームのアイコン"
+                      width={32}
+                      height={32}
+                    />
+                  ) : null}
+                </TableCell>
+                <TableCell>{game.name}</TableCell>
+                <TableCell align="right">{game.count}</TableCell>
+                <TableCell>
+                  {"id" in game ? (
+                    <Button gameId={game.id} onClick={remove} />
+                  ) : null}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 }
 

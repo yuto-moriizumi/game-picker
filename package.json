@@ -15,6 +15,7 @@
     "@hookform/resolvers": "^3.4.0",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
+    "@mui/material-nextjs": "^5.15.11",
     "@volgakurvar/vaidate-env": "^1.0.0",
     "axios": "^1.6.8",
     "dynamoose": "^4.0.1",
