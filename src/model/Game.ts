@@ -2,7 +2,7 @@ import { model } from "dynamoose";
 import { Item } from "dynamoose/dist/Item";
 import { v4 } from "uuid";
 
-export class Game extends Item {
+class Game extends Item {
   id!: string;
   name!: string;
   count!: number;
