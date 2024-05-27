@@ -16,7 +16,7 @@
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
     "@mui/material-nextjs": "^5.15.11",
-    "@tanstack/react-query": "^5.37.1",
+    "@tanstack/react-query": "^5.39.0",
     "@volgakurvar/vaidate-env": "^1.0.0",
     "axios": "^1.7.2",
     "dynamoose": "^4.0.1",
