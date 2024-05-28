@@ -37,7 +37,7 @@
     "@types/steamapi": "^2.2.5",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.11.0",
-    "@typescript-eslint/parser": "~7.10.0",
+    "@typescript-eslint/parser": "~7.11.0",
     "babel-plugin-transform-import-meta": "^2.2.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
