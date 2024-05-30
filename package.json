@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.4.2",
     "@mui/icons-material": "^5.15.18",
-    "@mui/material": "^5.15.18",
+    "@mui/material": "^5.15.19",
     "@mui/material-nextjs": "^5.15.11",
     "@tanstack/react-query": "^5.40.0",
     "@volgakurvar/vaidate-env": "^1.0.0",
