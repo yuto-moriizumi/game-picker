@@ -26,7 +26,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.52.0",
     "sharp": "^0.33.4",
-    "steamapi": "^3.0.8",
+    "steamapi": "^3.0.11",
     "yup": "^1.4.0"
   },
   "devDependencies": {
