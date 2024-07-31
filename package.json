@@ -15,7 +15,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.5",
-    "@mui/material-nextjs": "^5.16.4",
+    "@mui/material-nextjs": "^5.16.6",
     "@tanstack/react-query": "^5.51.15",
     "@volgakurvar/vaidate-env": "^1.0.0",
     "axios": "^1.7.2",
