@@ -4,6 +4,7 @@ const nextConfig = {
     remotePatterns: [
       { hostname: "steamcdn-a.akamaihd.net" },
       { hostname: "cdn.akamai.steamstatic.com" },
+      { hostname: "shared.akamai.steamstatic.com" },
     ],
   },
   transpilePackages: ["steamapi"],
