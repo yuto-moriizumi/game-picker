@@ -12,9 +12,9 @@ import { getGames } from "./actions";
 import { GameTableBody } from "@/component/GameTableBody";
 import { Modal } from "@/component/Modal";
 import { Provider } from "../component/Provider";
+import { Suspense } from "react";
 
 export default async function Home() {
-  const games = await getGames();
   return (
     <Provider>
       <Container maxWidth="sm">
@@ -29,7 +29,9 @@ export default async function Home() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <GameTableBody games={games} />
+              <Suspense>
+                <GameTableServerComponent />
+              </Suspense>
             </TableBody>
           </Table>
         </TableContainer>
@@ -37,6 +39,11 @@ export default async function Home() {
       <Modal />
     </Provider>
   );
+}
+
+async function GameTableServerComponent() {
+  const games = await getGames();
+  return <GameTableBody games={games} />;
 }
 
 export const dynamic = "force-dynamic";
