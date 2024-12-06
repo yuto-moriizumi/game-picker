@@ -22,7 +22,7 @@
     "dynamoose": "^4.0.2",
     "envalid": "^8.0.0",
     "next": "^15.0.4",
-    "react": "^18",
+    "react": "^19",
     "react-dom": "^18",
     "react-hook-form": "^7.53.2",
     "sharp": "^0.33.5",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/plugin-transform-private-methods": "^7.25.9",
     "@types/node": "^22",
-    "@types/react": "^18",
+    "@types/react": "^19",
     "@types/react-dom": "^18",
     "@types/steamapi": "^2.2.5",
     "@types/uuid": "^10.0.0",
