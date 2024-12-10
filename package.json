@@ -33,7 +33,7 @@
     "@babel/plugin-transform-private-methods": "^7.25.9",
     "@types/node": "^22",
     "@types/react": "^19",
-    "@types/react-dom": "^18",
+    "@types/react-dom": "^19",
     "@types/steamapi": "^2.2.5",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
