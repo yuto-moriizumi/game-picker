@@ -36,7 +36,7 @@
     "@types/react-dom": "^19",
     "@types/steamapi": "^2.2.5",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.19.1",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
     "babel-plugin-transform-import-meta": "^2.3.2",
     "eslint": "^9",
     "eslint-config-next": "15.1.4",
