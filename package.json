@@ -39,7 +39,7 @@
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "babel-plugin-transform-import-meta": "^2.3.2",
     "eslint": "^9",
-    "eslint-config-next": "15.1.4",
+    "eslint-config-next": "15.1.5",
     "prettier": "^3.4.2",
     "typescript": "^5"
   }
