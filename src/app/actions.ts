@@ -14,7 +14,6 @@ export async function removeGame(id: number) {
 
 export async function getGames() {
   "use server";
-  console.log("getGames");
   const env = validateEnv({
     DB_ACCESS_KEY_ID: str(),
     DB_SECRET_ACCESS_KEY: str(),
@@ -46,7 +45,7 @@ async function getOwnedGames(steam: SteamAPI): Promise<Game[]> {
       id: game.id,
       name: "name" in game ? game.name : "unknown",
       iconURL: "iconURL" in game ? game.iconURL : "",
-      count: await steam.getGamePlayers(game.id),
+      count: await steam.getGamePlayers(game.id).catch(() => 0),
     })),
   );
 }
@@ -70,7 +69,7 @@ async function getGame(steam: SteamAPI, id: number): Promise<Game> {
       isTracked: true,
     };
   } catch (error) {
-    console.error({ error });
+    console.log({ error });
     return {
       id,
       count: 0,
