@@ -33,8 +33,8 @@ export const CustomGameModel = model<CustomGameItem>("custom-game-picker", {
   },
 });
 
-import { Game } from "./Game";
+import { GameBase } from "./GameBase";
 
-export interface StoredCustomGame extends Game {
+export interface StoredCustomGame extends GameBase {
   type: "storedCustom";
 }
