@@ -2,6 +2,7 @@
   "name": "game-picker",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -31,14 +32,12 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-methods": "^7.25.9",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/steamapi": "^2.2.5",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.29.0",
-    "babel-plugin-transform-import-meta": "^2.3.2",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "prettier": "^3.5.3",
