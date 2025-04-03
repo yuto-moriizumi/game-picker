@@ -2,9 +2,14 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      { hostname: "steamcdn-a.akamaihd.net" },
-      { hostname: "cdn.akamai.steamstatic.com" },
-      { hostname: "shared.akamai.steamstatic.com" },
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
     ],
   },
   transpilePackages: ["steamapi"],

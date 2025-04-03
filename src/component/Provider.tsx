@@ -9,8 +9,8 @@ function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        // With SSR, we usually want to set some default staleTime
-        // above 0 to avoid refetching immediately on the client
+        // SSRでは、通常、クライアントですぐに再フェッチしないように、
+        // デフォルトのstaleTimeを0より上に設定します
         staleTime: 60 * 1000,
       },
     },
@@ -19,13 +19,14 @@ function makeQueryClient() {
 
 export function getQueryClient() {
   if (typeof window === "undefined") {
-    // Server: always make a new query client
+    // サーバー: 常に新しいクエリクライアントを作成
     return makeQueryClient();
   } else {
-    // Browser: make a new query client if we don't already have one
-    // This is very important so we don't re-make a new client if React
-    // suspends during the initial render. This may not be needed if we
-    // have a suspense boundary BELOW the creation of the query client
+    // ブラウザ: まだ持っていない場合は新しいクエリクライアントを作成
+    // これは、Reactが初期レンダリング中にサスペンドした場合に
+    // 新しいクライアントを再作成しないようにするために非常に重要です。
+    // クエリクライアントの作成の下にサスペンス境界がある場合は、
+    // これは必要ないかもしれません
     if (!browserQueryClient) browserQueryClient = makeQueryClient();
     return browserQueryClient;
   }
