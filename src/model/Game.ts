@@ -1,18 +1,7 @@
-import { model } from "dynamoose";
-import { Item } from "dynamoose/dist/Item";
-
-class GameItem extends Item {
-  id!: number;
-}
-
-export const GameModel = model<GameItem>("game-picker", {
-  id: Number,
-});
-
-export type Game = {
-  id: number;
+export interface Game {
+  type: "fetchedSteam" | "storedSteam" | "storedCustom"; // ゲームのタイプを明示的に指定
+  id: string;
   name: string;
   iconURL: string;
   count: number;
-  isTracked?: boolean;
-};
+}

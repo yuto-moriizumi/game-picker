@@ -8,11 +8,11 @@ import {
   TableBody,
   Table,
 } from "@mui/material";
-import { getGames } from "./actions";
 import { GameTableBody } from "@/component/GameTableBody";
-import { Modal } from "@/component/Modal";
+import { AddGameModal } from "@/component/AddGameModal";
 import { Provider } from "../component/Provider";
 import { Suspense } from "react";
+import { getGames } from "@/actions/getGames";
 
 export default async function Home() {
   return (
@@ -36,7 +36,7 @@ export default async function Home() {
           </Table>
         </TableContainer>
       </Container>
-      <Modal />
+      <AddGameModal />
     </Provider>
   );
 }
