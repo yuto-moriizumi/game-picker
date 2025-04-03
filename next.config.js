@@ -3,19 +3,15 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**',
+        protocol: "https",
+        hostname: "**",
       },
       {
-        protocol: 'http',
-        hostname: '**',
+        protocol: "http",
+        hostname: "**",
       },
     ],
   },
-  transpilePackages: ["steamapi"],
-  // experimental: {
-  //   serverComponentsExternalPackages: ["steamapi"],
-  // },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
