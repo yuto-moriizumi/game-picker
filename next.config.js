@@ -12,6 +12,8 @@ const nextConfig = {
       },
     ],
   },
+  transpilePackages: ["steamapi"],
+  // serverExternalPackages: ["steamapi"],
 };
 
 export default nextConfig;
