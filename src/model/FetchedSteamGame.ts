@@ -1,5 +1,5 @@
-import { Game } from "./Game";
+import { GameBase } from "./GameBase";
 
-export interface FetchedSteamGame extends Game {
+export interface FetchedSteamGame extends GameBase {
   type: "fetchedSteam";
 }

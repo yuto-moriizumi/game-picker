@@ -1,9 +1,10 @@
 "use server";
 
-import { Game } from "@/model/Game";
+import { GameBase } from "@/model/GameBase";
 import { initializeServices } from "./utils";
 import { getStoredCustomGames } from "./utils";
 import { getFetchedSteamGame, getStoredSteamGames } from "./utils"; // Import from steam actions
+import { Game } from "@/model/Game";
 
 export async function getGames(): Promise<Game[]> {
   "use server";
@@ -19,7 +20,7 @@ export async function getGames(): Promise<Game[]> {
 
   // Steamゲームを結合し、重複を削除（追跡中のバージョンが存在する場合は優先）
   // Game.id は string なので Map のキーも string にする
-  const allSteamGamesMap = new Map<string, Game>();
+  const allSteamGamesMap = new Map<string, GameBase>();
   ownedSteamGames.forEach((game) => {
     allSteamGamesMap.set(game.id, game);
   });
@@ -27,7 +28,7 @@ export async function getGames(): Promise<Game[]> {
     allSteamGamesMap.set(game.id, game); // 追跡中の場合、所有しているものを上書き
   });
 
-  const combinedGames: Game[] = [
+  const combinedGames: GameBase[] = [
     ...Array.from(allSteamGamesMap.values()),
     ...customGamesData,
   ];

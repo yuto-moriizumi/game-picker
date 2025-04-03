@@ -8,16 +8,14 @@ import { removeStoredGame } from "@/actions/removeStoredGame";
 import Image from "next/image";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { Game } from "@/model/Game";
 // StoredSteamGame と StoredCustomGame をインポート
-import { StoredSteamGame } from "@/model/StoredSteamGame";
-import { StoredCustomGame } from "@/model/StoredCustomGame";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit"; // EditIconをインポート
 import { getQueryClient } from "./Provider";
 import { EditGameModal } from "./EditGameModal"; // EditGameModalをインポート
 import { getGames } from "@/actions/getGames";
+import { Game } from "@/model/Game";
 
 export function GameTableBody(props: { games: Game[] }) {
   const [selectedGame, setSelectedGame] = useState<Game>();
@@ -60,33 +58,16 @@ export function GameTableBody(props: { games: Game[] }) {
           <TableCell align="right">{game.count}</TableCell>
           <TableCell>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-              {/* storedCustom タイプの場合、編集ボタンを表示 */}
               {game.type === "storedCustom" && (
                 <IconButton onClick={() => setSelectedGame(game)} size="small">
                   <EditIcon fontSize="small" />
                 </IconButton>
               )}
-              {/* storedSteam または storedCustom タイプの場合、削除ボタンを表示 */}
               {(game.type === "storedSteam" ||
                 game.type === "storedCustom") && (
                 <IconButton
-                  onClick={() => {
-                    // removeStoredGame は game オブジェクト全体を期待する
-                    // if ブロック内で型が絞り込まれるはずだが、明示的な型アサーションを追加
-                    if (
-                      game.type === "storedSteam" ||
-                      game.type === "storedCustom"
-                    ) {
-                      // game を StoredSteamGame | StoredCustomGame として扱う
-                      removeMutation.mutate(
-                        game as StoredSteamGame | StoredCustomGame,
-                      );
-                    } else {
-                      console.error("Cannot remove game of type:", game.type);
-                    }
-                  }}
+                  onClick={() => removeMutation.mutate(game)}
                   size="small"
-                  // ミューテーション実行中はボタンを無効化
                   disabled={removeMutation.isPending}
                 >
                   <DeleteIcon fontSize="small" />

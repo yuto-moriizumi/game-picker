@@ -17,8 +17,8 @@ import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { updateStoredCustomGame } from "@/actions/updateStoredCustomGame";
 import { getQueryClient } from "./Provider";
-import { Game } from "@/model/Game";
 import { StoredCustomGame } from "@/model/StoredCustomGame"; // StoredCustomGame をインポート
+import { Game } from "@/model/Game";
 
 // カスタムゲーム編集のスキーマ
 const editSchema = yup

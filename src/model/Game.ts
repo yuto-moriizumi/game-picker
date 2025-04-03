@@ -1,7 +1,5 @@
-export interface Game {
-  type: "fetchedSteam" | "storedSteam" | "storedCustom"; // ゲームのタイプを明示的に指定
-  id: string;
-  name: string;
-  iconURL: string;
-  count: number;
-}
+import { FetchedSteamGame } from "./FetchedSteamGame";
+import { StoredCustomGame } from "./StoredCustomGame";
+import { StoredSteamGame } from "./StoredSteamGame";
+
+export type Game = FetchedSteamGame | StoredSteamGame | StoredCustomGame;
