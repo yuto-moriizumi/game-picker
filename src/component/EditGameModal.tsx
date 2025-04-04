@@ -110,6 +110,7 @@ export function EditGameModal() {
           <Stack spacing={2}>
             <TextField
               label="ゲーム名"
+              aria-label="ゲーム名"
               {...register("name")}
               error={!!errors.name}
               helperText={errors.name?.message}
