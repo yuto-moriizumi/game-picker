@@ -23,5 +23,5 @@ export async function removeStoredGame(
     throw new Error("Cannot remove game of unknown type");
   }
 
-  revalidatePath("/"); // 削除後にキャッシュを再検証
+  revalidatePath("/");
 }

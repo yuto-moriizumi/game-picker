@@ -15,15 +15,16 @@ import { getGames } from "@/actions/getGames";
 import { Game } from "@/model/Game";
 import { useSelectedGameStore } from "@/store/selectedGameStore"; // Zustandストアをインポート
 
-export function GameTableBody(props: { games: Game[] }) {
+export function GameTableBody(props: { initialGames: Game[] }) {
   const { setSelectedGame } = useSelectedGameStore(); // Zustandストアから状態とセッターを取得
 
   const { data } = useQuery({
     queryKey: ["games"],
     queryFn: () => getGames(),
-    initialData: props.games,
+    initialData: props.initialGames,
     staleTime: 1000 * 10, // 10秒
   });
+
   // removeStoredGame 用のミューテーションを定義
   const removeMutation = useMutation({
     // mutationFn は removeStoredGame を使用
@@ -78,3 +79,5 @@ export function GameTableBody(props: { games: Game[] }) {
     </>
   );
 }
+
+export const revalidate = 1000 * 60 * 60;

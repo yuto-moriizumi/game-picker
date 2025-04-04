@@ -18,7 +18,6 @@ import { useMutation } from "@tanstack/react-query";
 import { updateStoredCustomGame } from "@/actions/updateStoredCustomGame";
 import { getQueryClient } from "./Provider";
 import { StoredCustomGame } from "@/model/StoredCustomGame"; // StoredCustomGame をインポート
-import { Game } from "@/model/Game";
 import { useSelectedGameStore } from "@/store/selectedGameStore"; // Zustandストアをインポート
 
 // カスタムゲーム編集のスキーマ

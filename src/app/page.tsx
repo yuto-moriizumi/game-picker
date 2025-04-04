@@ -45,7 +45,5 @@ export default async function Home() {
 
 async function GameTableServerComponent() {
   const games = await getGames();
-  return <GameTableBody games={games} />;
+  return <GameTableBody initialGames={games} />;
 }
-
-export const dynamic = "force-dynamic";
