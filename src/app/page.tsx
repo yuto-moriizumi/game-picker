@@ -47,3 +47,5 @@ async function GameTableServerComponent() {
   const games = await getGames();
   return <GameTableBody initialGames={games} />;
 }
+
+export const revalidate = 3600000;
