@@ -18,7 +18,7 @@ import { useMutation } from "@tanstack/react-query";
 import { updateStoredCustomGame } from "@/actions/updateStoredCustomGame";
 import { getQueryClient } from "./Provider";
 import { StoredCustomGame } from "@/model/StoredCustomGame"; // StoredCustomGame をインポート
-import { Game } from "@/model/Game";
+import { useSelectedGameStore } from "@/store/selectedGameStore"; // Zustandストアをインポート
 
 // カスタムゲーム編集のスキーマ
 const editSchema = yup
@@ -35,13 +35,8 @@ const editSchema = yup
   .required();
 type EditFormType = yup.InferType<typeof editSchema>;
 
-interface EditGameModalProps {
-  open: boolean;
-  onClose: () => void;
-  game: Game | undefined; // 編集対象のゲームデータ
-}
-
-export function EditGameModal({ open, onClose, game }: EditGameModalProps) {
+export function EditGameModal() {
+  const { selectedGame, setSelectedGame } = useSelectedGameStore(); // Zustandストアから状態とセッターを取得
   const queryClient = getQueryClient();
   const {
     register,
@@ -54,16 +49,16 @@ export function EditGameModal({ open, onClose, game }: EditGameModalProps) {
 
   // モーダルが開かれたとき、または編集対象のゲームが変わったときにフォームをリセット
   useEffect(() => {
-    if (game) {
+    if (selectedGame) {
       reset({
-        name: game.name,
-        iconURL: game.iconURL,
-        players: game.count, // カスタムゲームのプレイヤー数はcountに入っている想定
+        name: selectedGame.name,
+        iconURL: selectedGame.iconURL,
+        players: selectedGame.count, // カスタムゲームのプレイヤー数はcountに入っている想定
       });
     } else {
       reset({ name: "", iconURL: "", players: 1 }); // デフォルト値
     }
-  }, [game, reset]);
+  }, [selectedGame, reset]);
 
   // カスタムゲーム更新のミューテーション
   const updateMutation = useMutation({
@@ -80,7 +75,7 @@ export function EditGameModal({ open, onClose, game }: EditGameModalProps) {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["games"] });
-      onClose(); // 成功時にモーダルを閉じる
+      setSelectedGame(undefined); // 成功時にモーダルを閉じる (Zustandの状態を更新)
     },
     onError: (error) => {
       console.error("Failed to update game:", error);
@@ -89,8 +84,8 @@ export function EditGameModal({ open, onClose, game }: EditGameModalProps) {
   });
 
   const onSubmit: SubmitHandler<EditFormType> = (data) => {
-    if (game && typeof game.id === "string") {
-      updateMutation.mutate({ ...data, id: game.id });
+    if (selectedGame && typeof selectedGame.id === "string") {
+      updateMutation.mutate({ ...data, id: selectedGame.id });
     } else {
       console.error("Invalid game data for update");
     }
@@ -98,12 +93,12 @@ export function EditGameModal({ open, onClose, game }: EditGameModalProps) {
 
   const handleClose = () => {
     reset(); // フォームをリセット
-    onClose(); // 親コンポーネントのクローズハンドラを呼び出す
+    setSelectedGame(undefined); // Zustandの状態を更新してモーダルを閉じる
   };
 
   return (
     <MuiModal
-      open={open}
+      open={!!selectedGame} // Zustandの状態に基づいて開閉を制御
       onClose={handleClose}
       sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
     >
