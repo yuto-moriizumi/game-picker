@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { GameTableBody } from "@/component/GameTableBody";
 import { AddGameModal } from "@/component/AddGameModal";
+import { EditGameModal } from "@/component/EditGameModal"; // EditGameModal をインポート
 import { Provider } from "../component/Provider";
 import { Suspense } from "react";
 import { getGames } from "@/actions/getGames";
@@ -37,6 +38,7 @@ export default async function Home() {
         </TableContainer>
       </Container>
       <AddGameModal />
+      <EditGameModal />
     </Provider>
   );
 }

@@ -1,24 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { createPortal } from "react-dom"; // createPortal をインポート
 import { TableRow, TableCell, Box } from "@mui/material";
-// removeStoredGame をインポート
+
 import { removeStoredGame } from "@/actions/removeStoredGame";
 import Image from "next/image";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-// StoredSteamGame と StoredCustomGame をインポート
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit"; // EditIconをインポート
+import EditIcon from "@mui/icons-material/Edit";
 import { getQueryClient } from "./Provider";
-import { EditGameModal } from "./EditGameModal"; // EditGameModalをインポート
+
 import { getGames } from "@/actions/getGames";
 import { Game } from "@/model/Game";
+import { useSelectedGameStore } from "@/store/selectedGameStore"; // Zustandストアをインポート
 
 export function GameTableBody(props: { games: Game[] }) {
-  const [selectedGame, setSelectedGame] = useState<Game>();
+  const { setSelectedGame } = useSelectedGameStore(); // Zustandストアから状態とセッターを取得
 
   const { data } = useQuery({
     queryKey: ["games"],
@@ -77,15 +75,6 @@ export function GameTableBody(props: { games: Game[] }) {
           </TableCell>
         </TableRow>
       ))}
-      {globalThis.document &&
-        createPortal(
-          <EditGameModal
-            open={!!selectedGame}
-            onClose={() => setSelectedGame(undefined)}
-            game={selectedGame}
-          />,
-          globalThis.document.body, // body 要素をターゲットにする
-        )}
     </>
   );
 }

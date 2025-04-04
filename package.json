@@ -29,7 +29,8 @@
     "sharp": "^0.33.5",
     "steamapi": "^3.0.12",
     "uuid": "^11.1.0",
-    "yup": "^1.6.1"
+    "yup": "^1.6.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@types/node": "^22",
