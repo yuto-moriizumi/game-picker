@@ -8,7 +8,7 @@ import {
   TableBody,
   Table,
 } from "@mui/material";
-import { GameTableBody } from "@/component/GameTableBody";
+import { GameTableRows } from "@/component/GameTableRows";
 import { AddGameModal } from "@/component/AddGameModal";
 import { EditGameModal } from "@/component/EditGameModal"; // EditGameModal をインポート
 import { Provider } from "../component/Provider";
@@ -16,6 +16,7 @@ import { Suspense } from "react";
 import { getGames } from "@/actions/getGames";
 
 export default async function Home() {
+  const games = await getGames();
   return (
     <Provider>
       <Container maxWidth="sm">
@@ -29,9 +30,10 @@ export default async function Home() {
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
+            {/* TableBodyをSuspenseより上位に配置しないと、余分なTbodyが勝手に追加されることがある */}
             <TableBody>
               <Suspense>
-                <GameTableServerComponent />
+                <GameTableRows initialGames={games} />
               </Suspense>
             </TableBody>
           </Table>
@@ -41,11 +43,6 @@ export default async function Home() {
       <EditGameModal />
     </Provider>
   );
-}
-
-async function GameTableServerComponent() {
-  const games = await getGames();
-  return <GameTableBody initialGames={games} />;
 }
 
 export const revalidate = 3600000;
