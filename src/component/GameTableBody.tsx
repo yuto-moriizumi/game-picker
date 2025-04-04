@@ -79,5 +79,3 @@ export function GameTableBody(props: { initialGames: Game[] }) {
     </>
   );
 }
-
-export const revalidate = 1000 * 60 * 60;
