@@ -15,7 +15,7 @@ import { getGames } from "@/actions/getGames";
 import { Game } from "@/model/Game";
 import { useSelectedGameStore } from "@/store/selectedGameStore"; // Zustandストアをインポート
 
-export function GameTableBody(props: { initialGames: Game[] }) {
+export function GameTableRows(props: { initialGames: Game[] }) {
   const { setSelectedGame } = useSelectedGameStore(); // Zustandストアから状態とセッターを取得
 
   const { data } = useQuery({
@@ -58,7 +58,11 @@ export function GameTableBody(props: { initialGames: Game[] }) {
           <TableCell>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               {game.type === "storedCustom" && (
-                <IconButton onClick={() => setSelectedGame(game)} size="small">
+                <IconButton
+                  onClick={() => setSelectedGame(game)}
+                  size="small"
+                  aria-label="Edit"
+                >
                   <EditIcon fontSize="small" />
                 </IconButton>
               )}
@@ -68,6 +72,7 @@ export function GameTableBody(props: { initialGames: Game[] }) {
                   onClick={() => removeMutation.mutate(game)}
                   size="small"
                   disabled={removeMutation.isPending}
+                  aria-label="Delete"
                 >
                   <DeleteIcon fontSize="small" />
                 </IconButton>

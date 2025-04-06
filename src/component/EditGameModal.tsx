@@ -23,14 +23,14 @@ import { useSelectedGameStore } from "@/store/selectedGameStore"; // Zustandス�
 // カスタムゲーム編集のスキーマ
 const editSchema = yup
   .object({
-    name: yup.string().required(),
-    iconURL: yup.string().url("有効なURLである必要があります").required(),
+    name: yup.string().required("ゲーム名は必須です"), // エラーメッセージ追加
+    iconURL: yup.string().url("有効なURLである必要があります").required("アイコン画像のURLは必須です"), // エラーメッセージ追加
     players: yup
       .number()
       .typeError("プレイヤー数は数値である必要があります")
       .integer("プレイヤー数は整数である必要があります")
       .min(1, "プレイヤー数は1以上である必要があります")
-      .required(),
+      .required("プレイヤー数は必須です"), // エラーメッセージ追加
   })
   .required();
 type EditFormType = yup.InferType<typeof editSchema>;
@@ -45,6 +45,7 @@ export function EditGameModal() {
     formState: { errors },
   } = useForm<EditFormType>({
     resolver: yupResolver(editSchema),
+    mode: "onBlur", // バリデーションモードを onBlur に変更
   });
 
   // モーダルが開かれたとき、または編集対象のゲームが変わったときにフォームをリセット
@@ -110,6 +111,7 @@ export function EditGameModal() {
           <Stack spacing={2}>
             <TextField
               label="ゲーム名"
+              id="name"
               {...register("name")}
               error={!!errors.name}
               helperText={errors.name?.message}
