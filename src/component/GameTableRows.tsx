@@ -1,6 +1,6 @@
 "use client";
 
-import { TableRow, TableCell, Box, TableBody } from "@mui/material";
+import { TableRow, TableCell, Box } from "@mui/material";
 
 import { removeStoredGame } from "@/actions/removeStoredGame";
 import Image from "next/image";

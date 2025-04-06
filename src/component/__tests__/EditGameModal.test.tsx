@@ -261,9 +261,9 @@ describe("EditGameModal", () => {
     const updatePromise = new Promise((resolve) => {
       resolveUpdate = resolve;
     });
-    const updateMock = vi
-      .mocked(updateAction.updateStoredCustomGame)
-      .mockImplementation(() => updatePromise as Promise<void>);
+    vi.mocked(updateAction.updateStoredCustomGame).mockImplementation(
+      () => updatePromise as Promise<void>,
+    );
 
     renderWithProvider(<EditGameModal />);
 

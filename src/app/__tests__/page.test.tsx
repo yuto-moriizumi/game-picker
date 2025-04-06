@@ -9,7 +9,7 @@ vi.mock("@/actions/getGames", () => ({
 
 // GameTableBody コンポーネントをモック (修正)
 vi.mock("@/component/GameTableRows", () => ({
-  GameTableRows: ({ initialGames }: { initialGames: any[] }) => (
+  GameTableRows: () => (
     // tbody の中身としてレンダリングされる想定の要素を返す
     // 確認用に tr に test ID を付与
     <tr data-testid="mock-game-table-body-content">
@@ -33,7 +33,7 @@ vi.mock("@/component/EditGameModal", () => ({
 describe("Home Page", () => {
   it("コンポーネントが正しくレンダリングされる", async () => {
     // Home コンポーネントは非同期なので、render の結果を Promise として扱う
-    const renderResult = render(await Home());
+    render(await Home());
 
     // テーブルヘッダーの存在確認
     expect(
