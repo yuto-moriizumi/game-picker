@@ -29,7 +29,7 @@
     "react-dom": "^19",
     "react-hook-form": "^7.56.3",
     "sharp": "^0.34.1",
-    "steamapi": "^3.1.0",
+    "steamapi": "^3.1.1",
     "uuid": "^11.1.0",
     "yup": "^1.6.1",
     "zustand": "^5.0.4"
