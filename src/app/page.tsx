@@ -7,19 +7,30 @@ import {
   TableCell,
   TableBody,
   Table,
+  Box,
 } from "@mui/material";
 import { GameTableRows } from "@/component/GameTableRows";
 import { AddGameModal } from "@/component/AddGameModal";
-import { EditGameModal } from "@/component/EditGameModal"; // EditGameModal をインポート
-import { Provider } from "../component/Provider";
-import { Suspense } from "react";
+import { EditGameModal } from "@/component/EditGameModal";
+import { LastUpdated } from "@/component/LastUpdated";
 import { getGames } from "@/actions/getGames";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { makeQueryClient } from "@/lib/query-client";
 
 export default async function Home() {
-  const games = await getGames();
+  const queryClient = makeQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["games"],
+    queryFn: () => getGames(),
+  });
+
   return (
-    <Provider>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <Container maxWidth="sm">
+        <Box sx={{ mb: 2 }}>
+          <LastUpdated />
+        </Box>
         <TableContainer component={Paper}>
           <Table size="small">
             <TableHead>
@@ -30,19 +41,17 @@ export default async function Home() {
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
-            {/* TableBodyをSuspenseより上位に配置しないと、余分なTbodyが勝手に追加されることがある */}
             <TableBody>
-              <Suspense>
-                <GameTableRows initialGames={games} />
-              </Suspense>
+              <GameTableRows />
             </TableBody>
           </Table>
         </TableContainer>
       </Container>
       <AddGameModal />
       <EditGameModal />
-    </Provider>
+    </HydrationBoundary>
   );
 }
 
-export const revalidate = 60;
+// 1分経過したらstaleとみなす
+export const revalidate = 5;

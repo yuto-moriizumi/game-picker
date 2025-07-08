@@ -11,18 +11,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { getQueryClient } from "./Provider";
 
-import { getGames } from "@/actions/getGames";
-import { Game } from "@/model/Game";
+import { GameData } from "@/types/GameData";
 import { useSelectedGameStore } from "@/store/selectedGameStore"; // Zustandストアをインポート
+import { Game } from "@/model/Game";
 
-export function GameTableRows(props: { initialGames: Game[] }) {
+export function GameTableRows() {
   const { setSelectedGame } = useSelectedGameStore(); // Zustandストアから状態とセッターを取得
 
-  const { data } = useQuery({
+  const { data } = useQuery<GameData, Error, Game[]>({
     queryKey: ["games"],
-    queryFn: () => getGames(),
-    initialData: props.initialGames,
-    staleTime: 1000 * 10, // 10秒
+    select: (data: GameData) => data.games,
   });
 
   // removeStoredGame 用のミューテーションを定義
@@ -40,7 +38,7 @@ export function GameTableRows(props: { initialGames: Game[] }) {
   // EditGameModal を Portal を使って document.body にレンダリング
   return (
     <>
-      {data.map((game) => (
+      {data?.map((game) => (
         // 一意性のためにgame.idをキーとして使用（数値または文字列）
         <TableRow key={game.id}>
           <TableCell>

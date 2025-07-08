@@ -1,21 +1,14 @@
 "use client";
 
 import { ReactNode } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { makeQueryClient } from "@/lib/query-client";
 
 let browserQueryClient: QueryClient | undefined = undefined;
-
-function makeQueryClient() {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        // SSRでは、通常、クライアントですぐに再フェッチしないように、
-        // デフォルトのstaleTimeを0より上に設定します
-        staleTime: 60 * 1000,
-      },
-    },
-  });
-}
 
 export function getQueryClient() {
   if (typeof window === "undefined") {
@@ -32,10 +25,13 @@ export function getQueryClient() {
   }
 }
 
-export function Provider(props: { children: ReactNode }) {
+export function Provider(props: {
+  children: ReactNode;
+}) {
   return (
     <QueryClientProvider client={getQueryClient()}>
       {props.children}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

@@ -4,9 +4,9 @@ import { GameBase } from "@/model/GameBase";
 import { initializeServices } from "./utils";
 import { getStoredCustomGames } from "./utils";
 import { getFetchedSteamGame, getStoredSteamGames } from "./utils"; // Import from steam actions
-import { Game } from "@/model/Game";
+import { GameData } from "@/types/GameData";
 
-export async function getGames(): Promise<Game[]> {
+export async function getGames(): Promise<GameData> {
   "use server";
   const { steam } = initializeServices(); // await を削除
 
@@ -34,5 +34,10 @@ export async function getGames(): Promise<Game[]> {
   ];
 
   // カウントでソート（降順） - 注: カスタムゲームのカウントは現在0
-  return combinedGames.sort((a, b) => b.count - a.count);
+  const sortedGames = combinedGames.sort((a, b) => b.count - a.count);
+  
+  return {
+    games: sortedGames,
+    lastExecuted: new Date().toISOString()
+  };
 }

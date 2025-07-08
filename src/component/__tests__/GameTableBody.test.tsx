@@ -7,6 +7,7 @@ import { Game } from "@/model/Game";
 import * as removeStoredGameAction from "@/actions/removeStoredGame";
 import * as getGamesAction from "@/actions/getGames";
 import { useSelectedGameStore } from "@/store/selectedGameStore";
+import { GameData } from "@/types/GameData";
 
 // Zustandストアのモック
 vi.mock("@/store/selectedGameStore", () => ({
@@ -24,6 +25,10 @@ const queryClient = new QueryClient({
     queries: {
       retry: false, // テスト中はリトライしない
       gcTime: Infinity, // テスト中はキャッシュを保持
+      queryFn: async (): Promise<GameData> => {
+        const result = await getGamesAction.getGames();
+        return result;
+      },
     },
   },
 });
@@ -71,7 +76,7 @@ beforeEach(() => {
     setSelectedGame: mockSetSelectedGame,
   });
   // getGames のモック実装 (初期データを返す)
-  (getGamesAction.getGames as Mock).mockResolvedValue([...initialGames]); // 配列をコピーして渡す
+  (getGamesAction.getGames as Mock).mockResolvedValue({ games: [...initialGames], lastExecuted: "2023-01-01T00:00:00.000Z" } as GameData);
   // removeStoredGame のモック実装
   (removeStoredGameAction.removeStoredGame as Mock).mockResolvedValue(
     undefined,
@@ -79,6 +84,9 @@ beforeEach(() => {
 
   // React Query のキャッシュをクリア
   queryClient.clear();
+  
+  // 初期データを設定
+  queryClient.setQueryData(["games"], { games: [...initialGames], lastExecuted: "2023-01-01T00:00:00.000Z" } as GameData);
 });
 
 // QueryClientProviderでラップするヘルパー関数
@@ -95,7 +103,12 @@ const renderWithProvider = (ui: React.ReactElement) => {
 
 describe("GameTableBody", () => {
   it("初期ゲームデータが正しく表示される", async () => {
-    renderWithProvider(<GameTableRows initialGames={[...initialGames]} />);
+    renderWithProvider(<GameTableRows />);
+    
+    // データが読み込まれるまで待つ
+    await waitFor(() => {
+      expect(screen.getByText("Steam Game 1")).toBeInTheDocument();
+    });
 
     // 各ゲームの名前が表示されているか確認
     expect(screen.getByText("Steam Game 1")).toBeInTheDocument();
@@ -126,8 +139,13 @@ describe("GameTableBody", () => {
     );
   });
 
-  it("カスタムゲームには編集ボタンが表示され、Steamゲームには表示されない", () => {
-    renderWithProvider(<GameTableRows initialGames={[...initialGames]} />);
+  it("カスタムゲームには編集ボタンが表示され、Steamゲームには表示されない", async () => {
+    renderWithProvider(<GameTableRows />);
+    
+    // データが読み込まれるまで待つ
+    await waitFor(() => {
+      expect(screen.getByText("Custom Game 1")).toBeInTheDocument();
+    });
 
     // カスタムゲームの行を取得 (より堅牢な方法)
     const customGameRow = screen.getByText("Custom Game 1").closest("tr");
@@ -152,8 +170,13 @@ describe("GameTableBody", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("保存済みゲームには削除ボタンが表示される", () => {
-    renderWithProvider(<GameTableRows initialGames={[...initialGames]} />);
+  it("保存済みゲームには削除ボタンが表示される", async () => {
+    renderWithProvider(<GameTableRows />);
+    
+    // データが読み込まれるまで待つ
+    await waitFor(() => {
+      expect(screen.getByText("Steam Game 1")).toBeInTheDocument();
+    });
 
     // すべての削除ボタンを取得 (aria-label や title があればそちらを使う方が良い)
     // MUIのIconButtonはデフォルトでaria-labelを持たないことがあるため、アイコンのコンポーネント名などで検索するか、
@@ -169,7 +192,12 @@ describe("GameTableBody", () => {
   it("編集ボタンをクリックするとsetSelectedGameが呼び出される", async () => {
     // async を追加
     const user = userEvent.setup(); // userEvent をセットアップ
-    renderWithProvider(<GameTableRows initialGames={[...initialGames]} />);
+    renderWithProvider(<GameTableRows />);
+    
+    // データが読み込まれるまで待つ
+    await waitFor(() => {
+      expect(screen.getByText("Custom Game 1")).toBeInTheDocument();
+    });
 
     // カスタムゲームの編集ボタンを取得
     const customGameRow = screen.getByText("Custom Game 1").closest("tr");
@@ -193,11 +221,17 @@ describe("GameTableBody", () => {
     // removeStoredGameが成功した後のgetGamesのモック
     const remainingGames = [initialGames[0], initialGames[2]]; // Custom Game 1が削除された状態
 
-    (getGamesAction.getGames as Mock).mockResolvedValueOnce([
-      ...remainingGames,
-    ]); // 削除後の再取得用
+    (getGamesAction.getGames as Mock).mockResolvedValueOnce({
+      games: [...remainingGames],
+      lastExecuted: "2023-01-01T00:00:00.000Z"
+    } as GameData); // 削除後の再取得用
 
-    renderWithProvider(<GameTableRows initialGames={[...initialGames]} />);
+    renderWithProvider(<GameTableRows />);
+    
+    // データが読み込まれるまで待つ
+    await waitFor(() => {
+      expect(screen.getByText("Custom Game 1")).toBeInTheDocument();
+    });
 
     // カスタムゲームの削除ボタンを取得
     const customGameRow = screen.getByText("Custom Game 1").closest("tr");
@@ -250,9 +284,14 @@ describe("GameTableBody", () => {
     (removeStoredGameAction.removeStoredGame as Mock).mockImplementation(
       () => removePromise,
     );
-    (getGamesAction.getGames as Mock).mockResolvedValue([...initialGames]); // getGamesは通常通り
+    (getGamesAction.getGames as Mock).mockResolvedValue({ games: [...initialGames], lastExecuted: "2023-01-01T00:00:00.000Z" } as GameData); // getGamesは通常通り
 
-    renderWithProvider(<GameTableRows initialGames={[...initialGames]} />);
+    renderWithProvider(<GameTableRows />);
+    
+    // データが読み込まれるまで待つ
+    await waitFor(() => {
+      expect(screen.getByText("Steam Game 1")).toBeInTheDocument();
+    });
 
     // Steamゲーム1の削除ボタンを取得
     const steamGame1Row = screen.getByText("Steam Game 1").closest("tr");
@@ -276,7 +315,7 @@ describe("GameTableBody", () => {
 
     // データ再取得とUI更新を待つ (invalidateQueriesがトリガーされるはず)
     // getGames が再度呼ばれるのを待つ方が確実かもしれない
-    (getGamesAction.getGames as Mock).mockResolvedValueOnce([...initialGames]); // 再取得用のモック
+    (getGamesAction.getGames as Mock).mockResolvedValueOnce({ games: [...initialGames], lastExecuted: "2023-01-01T00:00:00.000Z" } as GameData); // 再取得用のモック
     queryClient.invalidateQueries({ queryKey: ["games"] });
 
     await waitFor(() => {
