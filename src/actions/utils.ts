@@ -22,7 +22,7 @@ export async function getFetchedSteamGame(
         type: "fetchedSteam", // タイプを設定
         id: gameIdStr,
         name: "name" in game ? game.name : "unknown",
-        iconURL: "iconURL" in game ? game.iconURL : "",
+        iconURL: "iconURL" in game ? game.iconURL : undefined,
         count: await steam.getGamePlayers(game.id).catch(() => 0),
       };
     }),
@@ -60,14 +60,15 @@ async function getSteamGameDetails<Type extends "storedSteam" | "fetchedSteam">(
     };
   }
   try {
+    const playerPromise = steam.getGamePlayers(numericId);
     const detail = await steam.getGameDetails(numericId);
-    const players = await steam.getGamePlayers(numericId);
+
     return {
       type,
       id: id, // DB から取得した string ID を使用
-      count: players,
-      name: detail.name,
-      iconURL: detail.capsule_imagev5,
+      count: await playerPromise,
+      name: detail[id].name,
+      iconURL: detail[id].capsuleImagev5,
     };
   } catch (error) {
     console.log({ error });

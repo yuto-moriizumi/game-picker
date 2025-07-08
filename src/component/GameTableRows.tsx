@@ -44,13 +44,16 @@ export function GameTableRows(props: { initialGames: Game[] }) {
         // 一意性のためにgame.idをキーとして使用（数値または文字列）
         <TableRow key={game.id}>
           <TableCell>
-            <Image
-              src={game.iconURL}
-              alt="ゲームのアイコン"
-              width={64}
-              height={32}
-              style={{ objectFit: "contain" }} // 自動サイズ調整
-            />
+            {/* // アイコンが存在する場合のみ表示 (next/imageは空文字をsrcに渡すと無限リロードが発生するため)} */}
+            {game.iconURL && (
+              <Image
+                src={game.iconURL}
+                alt="ゲームのアイコン"
+                width={64}
+                height={32}
+                style={{ objectFit: "contain" }} // 自動サイズ調整
+              />
+            )}
           </TableCell>
           <TableCell>{game.name}</TableCell>
           {/* カウントを表示（カスタムゲームの場合は現在0） */}
