@@ -24,7 +24,10 @@ import { useSelectedGameStore } from "@/store/selectedGameStore"; // Zustandス�
 const editSchema = yup
   .object({
     name: yup.string().required("ゲーム名は必須です"), // エラーメッセージ追加
-    iconURL: yup.string().url("有効なURLである必要があります").required("アイコン画像のURLは必須です"), // エラーメッセージ追加
+    iconURL: yup
+      .string()
+      .url("有効なURLである必要があります")
+      .required("アイコン画像のURLは必須です"), // エラーメッセージ追加
     players: yup
       .number()
       .typeError("プレイヤー数は数値である必要があります")

@@ -20,6 +20,12 @@ import { makeQueryClient } from "@/lib/query-client";
 export default async function Home() {
   const queryClient = makeQueryClient();
 
+  /**
+   * loader phaseでrevalidate指定時間ごとに実行する
+   * キャッシュが生きてる場合リクエスト時にビルドされるわけではないので初期表示を高速化できる
+   * データが古い場合はクライアントサイドで更新される
+   * 現在のところrevalidateとstaleTimeが同じ値なので、即座に更新とはならない
+   */
   await queryClient.prefetchQuery({
     queryKey: ["games"],
     queryFn: () => getGames(),
@@ -54,4 +60,4 @@ export default async function Home() {
 }
 
 // 1分経過したらstaleとみなす
-export const revalidate = 5;
+export const revalidate = 60;

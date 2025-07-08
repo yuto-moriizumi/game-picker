@@ -27,8 +27,9 @@ export function GameTableRows() {
   const removeMutation = useMutation({
     // mutationFn は removeStoredGame を使用
     mutationFn: removeStoredGame,
-    onSuccess: () =>
-      getQueryClient().invalidateQueries({ queryKey: ["games"] }),
+    onSuccess: () => {
+      getQueryClient().invalidateQueries({ queryKey: ["games"] });
+    },
     onError: (error) => {
       // エラーハンドリングを追加（例: console.error）
       console.error("Failed to remove game:", error);
