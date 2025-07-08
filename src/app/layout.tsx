@@ -14,7 +14,9 @@ export default function RootLayout({
   return (
     <html lang="jp">
       <body>
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        <AppRouterCacheProvider>
+          {children}
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
