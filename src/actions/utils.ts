@@ -22,7 +22,7 @@ export async function getFetchedSteamGame(
         type: "fetchedSteam", // タイプを設定
         id: gameIdStr,
         name: "name" in game ? game.name : "unknown",
-        iconURL: "iconURL" in game ? game.iconURL : "",
+        iconURL: "iconURL" in game ? game.iconURL : undefined,
         count: await steam.getGamePlayers(game.id).catch(() => 0),
       };
     }),
