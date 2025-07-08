@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { Provider } from "@/component/Provider";
 
 export const metadata: Metadata = {
   title: "GamePicker",
@@ -16,7 +15,7 @@ export default function RootLayout({
     <html lang="jp">
       <body>
         <AppRouterCacheProvider>
-          <Provider>{children}</Provider>
+          {children}
         </AppRouterCacheProvider>
       </body>
     </html>

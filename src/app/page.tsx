@@ -16,6 +16,7 @@ import { LastUpdated } from "@/component/LastUpdated";
 import { getGames } from "@/actions/getGames";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { makeQueryClient } from "@/lib/query-client";
+import { Provider } from "@/component/Provider";
 
 export default async function Home() {
   const queryClient = makeQueryClient();
@@ -32,30 +33,32 @@ export default async function Home() {
   });
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container maxWidth="sm">
-        <Box sx={{ mb: 2 }}>
-          <LastUpdated />
-        </Box>
-        <TableContainer component={Paper}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell>名前</TableCell>
-                <TableCell width="100px">プレイヤー数</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <GameTableRows />
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Container>
-      <AddGameModal />
-      <EditGameModal />
-    </HydrationBoundary>
+    <Provider>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Container maxWidth="sm">
+          <Box sx={{ mb: 2 }}>
+            <LastUpdated />
+          </Box>
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell>名前</TableCell>
+                  <TableCell width="100px">プレイヤー数</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <GameTableRows />
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Container>
+        <AddGameModal />
+        <EditGameModal />
+      </HydrationBoundary>
+    </Provider>
   );
 }
 

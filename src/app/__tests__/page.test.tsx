@@ -1,10 +1,11 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import Home from "../page";
 import { vi } from "vitest";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // モックの設定
 vi.mock("@/actions/getGames", () => ({
-  getGames: vi.fn().mockResolvedValue([]), // getGames をモックし、空の配列を返すように設定
+  getGames: vi.fn().mockResolvedValue({ games: [], lastExecuted: "2023-01-01T00:00:00.000Z" }), // getGames をモックし、空の配列を返すように設定
 }));
 
 // GameTableBody コンポーネントをモック (修正)
@@ -32,8 +33,21 @@ vi.mock("@/component/EditGameModal", () => ({
 
 describe("Home Page", () => {
   it("コンポーネントが正しくレンダリングされる", async () => {
+    // Test用のQueryClientを作成
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
+
     // Home コンポーネントは非同期なので、render の結果を Promise として扱う
-    render(await Home());
+    render(
+      <QueryClientProvider client={queryClient}>
+        {await Home()}
+      </QueryClientProvider>
+    );
 
     // テーブルヘッダーの存在確認
     expect(
