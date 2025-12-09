@@ -28,7 +28,7 @@
     "next": "^16.0.8",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
-    "react-hook-form": "^7.63.0",
+    "react-hook-form": "^7.68.0",
     "sharp": "^0.34.5",
     "steamapi": "^3.1.0",
     "uuid": "^13.0.0",
