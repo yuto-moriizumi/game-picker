@@ -47,7 +47,7 @@
     "@types/steamapi": "^2.2.5",
     "@types/uuid": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^8.44.1",
-    "@vitejs/plugin-react": "^5.0.4",
+    "@vitejs/plugin-react": "^5.1.2",
     "@vitest/coverage-v8": "^4.0.15",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.0.8",
