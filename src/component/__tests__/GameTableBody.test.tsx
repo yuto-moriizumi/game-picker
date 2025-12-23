@@ -253,6 +253,7 @@ describe("GameTableBody", () => {
     // initialGames[1] と完全に一致するか確認
     expect(removeStoredGameAction.removeStoredGame).toHaveBeenCalledWith(
       expect.objectContaining(initialGames[1]),
+      expect.anything(),
     );
 
     // invalidateQueries が呼び出されるのを待つ

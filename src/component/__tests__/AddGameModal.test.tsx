@@ -127,7 +127,7 @@ describe("AddGameModal", () => {
 
       await waitFor(() => {
         expect(addStoredSteamGame).toHaveBeenCalledTimes(1);
-        expect(addStoredSteamGame).toHaveBeenCalledWith("12345");
+        expect(addStoredSteamGame).toHaveBeenCalledWith("12345", expect.anything());
       });
 
       // モーダルが閉じることを確認
