@@ -46,7 +46,7 @@
     "@types/react-dom": "19.2.3",
     "@types/steamapi": "^2.2.5",
     "@types/uuid": "^11.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.44.1",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
     "@vitejs/plugin-react": "^5.1.2",
     "@vitest/coverage-v8": "^4.0.17",
     "eslint": "^9.39.2",
