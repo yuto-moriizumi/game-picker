@@ -61,14 +61,14 @@ async function getSteamGameDetails<Type extends "storedSteam" | "fetchedSteam">(
   }
   try {
     const playerPromise = steam.getGamePlayers(numericId);
-    const detail = await steam.getGameDetails(numericId);
+    const gameData = await steam.getGameDetails(numericId);
 
     return {
       type,
       id: id, // DB から取得した string ID を使用
       count: await playerPromise,
-      name: detail[id].name,
-      iconURL: detail[id].capsuleImagev5,
+      name: gameData.name,
+      iconURL: gameData.capsuleImagev5 ?? "",
     };
   } catch (error) {
     console.log({ error });
