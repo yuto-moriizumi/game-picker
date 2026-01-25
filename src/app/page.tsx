@@ -35,7 +35,7 @@ export default async function Home() {
   return (
     <Provider>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
           <Box sx={{ mb: 2 }}>
             <LastUpdated />
           </Box>

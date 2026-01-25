@@ -1,6 +1,6 @@
 "use client";
 
-import { TableRow, TableCell, Box } from "@mui/material";
+import { TableRow, TableCell, Box, Link } from "@mui/material";
 
 import { removeStoredGame } from "@/actions/removeStoredGame";
 import Image from "next/image";
@@ -54,7 +54,20 @@ export function GameTableRows() {
               />
             )}
           </TableCell>
-          <TableCell>{game.name}</TableCell>
+          <TableCell>
+            {game.type === "fetchedSteam" || game.type === "storedSteam" ? (
+              <Link
+                href={`https://steamdb.info/app/${game.id}/charts/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="hover"
+              >
+                {game.name}
+              </Link>
+            ) : (
+              game.name
+            )}
+          </TableCell>
           {/* カウントを表示（カスタムゲームの場合は現在0） */}
           <TableCell align="right">{game.count}</TableCell>
           <TableCell>
