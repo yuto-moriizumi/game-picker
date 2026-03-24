@@ -20,7 +20,7 @@
     "@mui/material": "^7.3.8",
     "@mui/material-nextjs": "^7.3.9",
     "@tanstack/react-query": "^5.95",
-    "@tanstack/react-query-devtools": "^5.91",
+    "@tanstack/react-query-devtools": "^5.95",
     "@volgakurvar/vaidate-env": "^1.0.0",
     "axios": "^1.13.6",
     "dynamoose": "^4.1.5",
