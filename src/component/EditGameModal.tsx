@@ -137,7 +137,7 @@ export function EditGameModal() {
               helperText={errors.players?.message}
               fullWidth
               required
-              InputProps={{ inputProps: { min: 1 } }} // HTML5の最小値制約
+              slotProps={{ input: { inputProps: { min: 1 } } }} // HTML5の最小値制約
             />
             <Box
               sx={{
