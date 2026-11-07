@@ -1,6 +1,7 @@
 "use server";
 
-import { StoredCustomGame, CustomGameModel } from "@/model/StoredCustomGame";
+import { getDb } from "@/lib/db";
+import { StoredCustomGame } from "@/model/StoredCustomGame";
 import { initializeServices } from "./utils";
 import { revalidatePath } from "next/cache";
 
@@ -8,15 +9,16 @@ import { revalidatePath } from "next/cache";
 
 export async function updateStoredCustomGame(game: StoredCustomGame) {
   "use server";
-  initializeServices(); // await を削除
+  initializeServices();
 
-  // 更新するデータオブジェクトを作成
-  const updateData = {
-    name: game.name,
-    iconURL: game.iconURL,
-    players: game.count, // StoredCustomGame の count は players に対応
-  };
-  // 指定されたcustomId (game.id) でゲームを更新
-  await CustomGameModel.update({ customId: game.id }, updateData);
+  const sql = getDb();
+  // 指定された custom_id (game.id) でゲームを更新
+  await sql`
+    UPDATE custom_games
+    SET name = ${game.name},
+        icon_url = ${game.iconURL},
+        players = ${game.count}
+    WHERE custom_id = ${game.id}::uuid
+  `;
   revalidatePath("/"); // 更新後にキャッシュを再検証
 }

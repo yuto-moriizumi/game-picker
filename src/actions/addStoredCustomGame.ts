@@ -1,6 +1,6 @@
 "use server";
 
-import { CustomGameModel } from "@/model/StoredCustomGame";
+import { getDb } from "@/lib/db";
 import { initializeServices } from "./utils";
 import { revalidatePath } from "next/cache";
 
@@ -11,9 +11,12 @@ export async function addStoredCustomGame(
   players: number, // プレイヤー数を引数に追加
 ) {
   "use server";
-  initializeServices(); // await を削除
+  initializeServices();
+  const sql = getDb();
   // プレイヤー数を含めて新しいゲームを作成
-  const newGame = new CustomGameModel({ name, iconURL, players });
-  await newGame.save();
+  await sql`
+    INSERT INTO custom_games (name, icon_url, players)
+    VALUES (${name}, ${iconURL}, ${players})
+  `;
   revalidatePath("/"); // 追加後にキャッシュを再検証
 }

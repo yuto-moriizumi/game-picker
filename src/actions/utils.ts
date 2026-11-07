@@ -1,9 +1,8 @@
-import { AWS_REGION } from "@/constant";
+import { getDb } from "@/lib/db";
 import { FetchedSteamGame } from "@/model/FetchedSteamGame";
-import { StoredCustomGame, CustomGameModel } from "@/model/StoredCustomGame";
-import { SteamGameModel, StoredSteamGame } from "@/model/StoredSteamGame";
+import { StoredCustomGame } from "@/model/StoredCustomGame";
+import { StoredSteamGame } from "@/model/StoredSteamGame";
 import { validateEnv } from "@volgakurvar/vaidate-env";
-import { aws } from "dynamoose";
 import { str } from "envalid";
 import SteamAPI from "steamapi";
 
@@ -33,10 +32,10 @@ export async function getFetchedSteamGame(
 export async function getStoredSteamGames(
   steam: SteamAPI,
 ): Promise<StoredSteamGame[]> {
-  const games = await SteamGameModel.scan().exec();
-  // SteamGameModel の id は string になったので、そのまま使う
-  // Steam API 呼び出しのために数値に変換する必要がある
-  const validGameIds = games.map((g) => g.id.toString());
+  const sql = getDb();
+  const games = await sql`SELECT app_id FROM steam_games ORDER BY app_id`;
+  // Steam API 呼び出しのために数値に変換する
+  const validGameIds = games.map((g) => String(g.app_id));
   return Promise.all(
     validGameIds.map((id) => getSteamGameDetails(steam, id, "storedSteam")),
   );
@@ -84,33 +83,28 @@ async function getSteamGameDetails<Type extends "storedSteam" | "fetchedSteam">(
 }
 
 export async function getStoredCustomGames(): Promise<StoredCustomGame[]> {
-  const customGames = await CustomGameModel.scan().exec();
+  const sql = getDb();
+  const customGames = await sql`
+    SELECT custom_id, name, icon_url, players
+    FROM custom_games
+    ORDER BY name
+  `;
   return customGames.map((cg) => ({
     type: "storedCustom", // タイプを設定
-    id: cg.customId, // customIdを一意の識別子として使用 (string)
-    name: cg.name,
-    iconURL: cg.iconURL,
-    count: cg.players, // DynamoDBからプレイヤー数を取得
+    id: String(cg.custom_id), // custom_id を一意の識別子として使用 (string)
+    name: String(cg.name),
+    iconURL: String(cg.icon_url),
+    count: Number(cg.players), // Postgres からプレイヤー数を取得
   }));
 }
-// AWSとSteam APIを初期化する関数
 
+// DB と Steam API を初期化する関数
 export function initializeServices() {
   const env = validateEnv({
-    DB_ACCESS_KEY_ID: str(),
-    DB_SECRET_ACCESS_KEY: str(),
+    DATABASE_URL: str(),
     STEAM_KEY: str(),
   });
   if (env instanceof Error) throw env;
-  aws.ddb.set(
-    new aws.ddb.DynamoDB({
-      region: AWS_REGION,
-      credentials: {
-        accessKeyId: env.DB_ACCESS_KEY_ID,
-        secretAccessKey: env.DB_SECRET_ACCESS_KEY,
-      },
-    }),
-  );
   const steam = new SteamAPI(env.STEAM_KEY);
   return { steam };
 }

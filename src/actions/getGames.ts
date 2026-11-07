@@ -15,7 +15,7 @@ export async function getGames(): Promise<GameData> {
     await Promise.all([
       getStoredSteamGames(steam), // 追跡中のSteamゲームを取得 (from steam.ts)
       getFetchedSteamGame(steam), // 所有しているSteamゲームを取得 (from steam.ts)
-      getStoredCustomGames(), // DynamoDBからカスタムゲームを取得 (from custom.ts)
+      getStoredCustomGames(), // Postgres からカスタムゲームを取得 (from custom.ts)
     ]);
 
   // Steamゲームを結合し、重複を削除（追跡中のバージョンが存在する場合は優先）

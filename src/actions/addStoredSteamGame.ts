@@ -1,6 +1,6 @@
 "use server";
 
-import { SteamGameModel } from "@/model/StoredSteamGame";
+import { getDb } from "@/lib/db";
 import { initializeServices } from "./utils";
 import { revalidatePath } from "next/cache";
 
@@ -9,9 +9,19 @@ import { revalidatePath } from "next/cache";
 export async function addStoredSteamGame(id: string) {
   // 明確にするために名前変更: addSteamGame
   "use server";
-  initializeServices(); // await を削除
+  initializeServices();
 
-  // IDが既に存在するかどうかを確認する検証を追加することを検討
-  await new SteamGameModel({ id }).save(); // Dynamoose はスキーマに基づいて型を処理するはず
+  const appId = Number(id);
+  if (!Number.isInteger(appId)) {
+    throw new Error(`Invalid Steam app id: ${id}`);
+  }
+
+  const sql = getDb();
+  // 既に登録済みの場合は何もしない
+  await sql`
+    INSERT INTO steam_games (app_id)
+    VALUES (${String(appId)})
+    ON CONFLICT (app_id) DO NOTHING
+  `;
   revalidatePath("/"); // 追加後にキャッシュを再検証
 }

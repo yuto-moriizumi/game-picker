@@ -13,8 +13,7 @@ const nextConfig = {
     ],
   },
   // transpilePackages: ["steamapi"],
-  /** dynamoose https://github.com/dynamoose/dynamoose/issues/1617#issuecomment-1690244996 */
-  serverExternalPackages: ["steamapi", "dynamoose"],
+  serverExternalPackages: ["steamapi"],
 };
 
 export default nextConfig;

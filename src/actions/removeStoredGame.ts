@@ -1,7 +1,8 @@
 "use server";
 
-import { StoredCustomGame, CustomGameModel } from "@/model/StoredCustomGame";
-import { StoredSteamGame, SteamGameModel } from "@/model/StoredSteamGame";
+import { getDb } from "@/lib/db";
+import { StoredCustomGame } from "@/model/StoredCustomGame";
+import { StoredSteamGame } from "@/model/StoredSteamGame";
 import { initializeServices } from "./utils";
 import { revalidatePath } from "next/cache";
 
@@ -10,13 +11,15 @@ export async function removeStoredGame(
   game: StoredSteamGame | StoredCustomGame,
 ) {
   "use server";
-  initializeServices(); // await を削除
+  initializeServices();
+
+  const sql = getDb();
 
   if (game.type === "storedSteam") {
-    await SteamGameModel.delete(game.id);
+    await sql`DELETE FROM steam_games WHERE app_id = ${String(game.id)}`;
   } else if (game.type === "storedCustom") {
-    // CustomGameModel uses customId as the primary key
-    await CustomGameModel.delete({ customId: game.id });
+    // custom_games は custom_id を主キーとして使用
+    await sql`DELETE FROM custom_games WHERE custom_id = ${game.id}::uuid`;
   } else {
     // 想定外のタイプの場合はエラーを投げるか、ログを出力するなど
     console.error("Unknown game type for removal:", game);
