@@ -22,7 +22,7 @@
     "@mui/material-nextjs": "^9.5.0",
     "@neondatabase/serverless": "^1.2.1",
     "@tanstack/react-query": "^5.107",
-    "@tanstack/react-query-devtools": "^5.104",
+    "@tanstack/react-query-devtools": "^5.107",
     "@volgakurvar/vaidate-env": "^1.0.0",
     "axios": "^1.21.1",
     "envalid": "^9.0.0",
